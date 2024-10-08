@@ -1,9 +1,12 @@
-# serverless-vpc-plugin
+# @sparklaboratory/serverless-vpc-plugin
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-[![npm version](https://badge.fury.io/js/serverless-vpc-plugin.svg)](https://badge.fury.io/js/serverless-vpc-plugin)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/smoketurner/serverless-vpc-plugin/master/LICENSE)
-[![npm downloads](https://img.shields.io/npm/dt/serverless-vpc-plugin.svg?style=flat)](https://www.npmjs.com/package/serverless-vpc-plugin)
+[![npm version](https://badge.fury.io/js/@sparklaboratory/serverless-vpc-plugin.svg)](https://badge.fury.io/js/@sparklaboratory/serverless-vpc-plugin)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/@sparklaboratory/serverless-vpc-plugin/master/LICENSE)
+[![npm downloads](https://img.shields.io/npm/dt/@sparklaboratory/serverless-vpc-plugin.svg?style=flat)](https://www.npmjs.com/package/@sparklaboratory/serverless-vpc-plugin)
+
+> [!IMPORTANT]  
+> This is a fork of the popular [serverless-vpc-plugin](https://www.serverless.com/plugins/serverless-vpc-plugin). We often do not run the serverless framework anymore, but have a few needs with it. As such we're maintaining it only as much as necessary to keep it running.
 
 Automatically creates an AWS Virtual Private Cloud (VPC) using all available Availability Zones (AZ) in a region.
 
@@ -117,7 +120,7 @@ custom:
       - us-east-1c
 
     # By default, S3 and DynamoDB endpoints will be available within the VPC
-    # see https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html
+    # see https://docs.aws.amazon.com/vpc/latest/privatelink/aws-services-privatelink-support.html
     # for a list of available service endpoints to provision within the VPC
     # (varies per region)
     services:
@@ -126,6 +129,7 @@ custom:
 
     # Optionally specify subnet groups to create. If not provided, subnet groups
     # for RDS, Redshift, ElasticCache and DAX will be provisioned.
+    # Options include: rds, elasticache, redshift and dax
     subnetGroups:
       - rds
 
