@@ -1,6 +1,9 @@
 {
   "name": "@sparklaboratory/serverless-vpc-plugin",
   "version": "1.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=20.0"
   },

@@ -99,7 +99,10 @@ function buildNatInstance(imageId, instanceType, zones = [], { name = 'NatInstan
             },
           },
         ],
-        ImageId: imageId, // amzn-ami-vpc-nat-hvm-2018.03.0.20181116-x86_64-ebs
+        IamInstanceProfile: {
+          Ref: `${name}InstanceProfile`,
+        },
+        ImageId: imageId,
         InstanceType: instanceType,
         Monitoring: false,
         NetworkInterfaces: [
@@ -126,6 +129,36 @@ function buildNatInstance(imageId, instanceType, zones = [], { name = 'NatInstan
               // eslint-disable-next-line no-template-curly-in-string
               'Fn::Sub': '${AWS::StackName}-nat',
             },
+          },
+        ],
+      },
+    },
+    [`${name}Role`]: {
+      Type: 'AWS::IAM::Role',
+      Properties: {
+        AssumeRolePolicyDocument: {
+          Version: '2012-10-17',
+          Statement: [
+            {
+              Effect: 'Allow',
+              Principal: {
+                Service: 'ec2.amazonaws.com',
+              },
+              Action: 'sts:AssumeRole',
+            },
+          ],
+        },
+        ManagedPolicyArns: [
+          'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore',
+        ],
+      },
+    },
+    [`${name}InstanceProfile`]: {
+      Type: 'AWS::IAM::InstanceProfile',
+      Properties: {
+        Roles: [
+          {
+            Ref: `${name}Role`,
           },
         ],
       },
