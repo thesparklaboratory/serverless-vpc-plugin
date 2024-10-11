@@ -149,8 +149,61 @@ function buildNatInstance(imageId, instanceType, zones = [], { name = 'NatInstan
           ],
         },
         ManagedPolicyArns: [
-          'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore',
+          'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore', // Ability for SSH
+          'arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy', // Ability for Cloudwatch Agent
         ],
+        "Policies": [
+          // Ability for Cloudwatch Agent
+          {
+            "PolicyName": "NATSSMPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ssm:GetParameter"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          },
+          // Ability for Static IP
+          {
+            "PolicyName": "NATEIPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:AssociateAddress",
+                    "ec2:DisassociateAddress"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          },
+          // Ability for HA-mode
+          {
+            "PolicyName": "NATNetworkInterfacePolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:AttachNetworkInterface",
+                    "ec2:DetachNetworkInterface"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
       },
     },
     [`${name}InstanceProfile`]: {
