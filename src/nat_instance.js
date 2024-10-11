@@ -145,6 +145,16 @@ function buildNatInstance(imageId, instanceType, zones = [], { name = 'NatInstan
             },
           },
         ],
+        UserData: {
+          'Fn::Base64': {
+            'Fn::Sub': `#!/bin/bash -xe
+              yum update -y
+              yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_arm64/amazon-ssm-agent.rpm
+              systemctl enable fck-nat.service
+              systemctl restart fck-nat.service
+            `,
+          },
+        },
       },
     },
     [`${name}Role`]: {
