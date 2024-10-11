@@ -29,6 +29,13 @@ function buildNatSecurityGroup() {
             ToPort: 443,
             CidrIp: '0.0.0.0/0',
           },
+          {
+            Description: 'permit outbound DB access to the Internet',
+            IpProtocol: 'tcp',
+            FromPort: 3306,
+            ToPort: 3306,
+            CidrIp: '0.0.0.0/0',
+          },
         ],
         SecurityGroupIngress: [
           {
@@ -48,6 +55,13 @@ function buildNatSecurityGroup() {
             SourceSecurityGroupId: {
               Ref: 'AppSecurityGroup',
             },
+          },
+          {
+            Description: 'permit inbound DB access from the Internet',
+            IpProtocol: 'tcp',
+            FromPort: 3306,
+            ToPort: 3306,
+            CidrIp: '0.0.0.0/0',
           },
         ],
         Tags: [
@@ -94,7 +108,7 @@ function buildNatInstance(imageId, instanceType, zones = [], { name = 'NatInstan
             DeviceName: '/dev/xvda',
             Ebs: {
               VolumeSize: 10,
-              VolumeType: 'gp2',
+              VolumeType: 'gp3',
               DeleteOnTermination: true,
             },
           },
